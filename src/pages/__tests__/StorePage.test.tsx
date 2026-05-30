@@ -44,23 +44,37 @@ describe('StorePage', () => {
     expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument()
   })
 
-  it('shows "no products found" when filters return empty', async () => {
-    server.use(http.get('*/products', () => HttpResponse.json([])))
+  it('calls search endpoint and shows results', async () => {
+    render(<StorePage />, { initialEntries: ['/?q=milk'] })
+    await screen.findByText('Whole Milk', {}, { timeout: 5000 })
+    expect(screen.getByRole('heading', { name: /Results for "milk"/ })).toBeInTheDocument()
+  })
+
+  it('shows no-results state when search returns empty', async () => {
+    server.use(http.get('*/products/search', () => HttpResponse.json([])))
     render(<StorePage />, { initialEntries: ['/?q=xyz'] })
     await screen.findByText('No products found', {}, { timeout: 5000 })
     expect(screen.getByRole('button', { name: /clear filters/i })).toBeInTheDocument()
   })
 
-  it('shows category name in heading', async () => {
+  it('calls category endpoint and shows category heading', async () => {
     render(<StorePage />, { initialEntries: ['/?category=dairy'] })
     await screen.findByText('Whole Milk', {}, { timeout: 5000 })
     expect(screen.getByRole('heading', { name: 'Dairy' })).toBeInTheDocument()
   })
 
-  it('shows search term in heading', async () => {
-    render(<StorePage />, { initialEntries: ['/?q=milk'] })
-    // Just check the heading — server-side filtering would happen via URL params
-    expect(screen.getByRole('heading', { name: /Results for "milk"/ })).toBeInTheDocument()
+  it('shows no-results state when category endpoint returns empty', async () => {
+    server.use(http.get('*/products/category/:category', () => HttpResponse.json([])))
+    render(<StorePage />, { initialEntries: ['/?category=frozen'] })
+    await screen.findByText('No products found', {}, { timeout: 5000 })
+  })
+
+  it('shows error state when category endpoint fails', async () => {
+    server.use(
+      http.get('*/products/category/:category', () => new HttpResponse(null, { status: 500 })),
+    )
+    render(<StorePage />, { initialEntries: ['/?category=dairy'] })
+    await screen.findByText('Failed to load products', {}, { timeout: 5000 })
   })
 
   it('out-of-stock product card has disabled button', async () => {

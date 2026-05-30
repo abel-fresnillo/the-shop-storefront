@@ -1,10 +1,10 @@
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { ShoppingCart, Store } from 'lucide-react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { useCart } from '@/features/cart/hooks/useCart'
 import { CATEGORIES } from '@/lib/constants'
-import { useRef, useCallback } from 'react'
 
 export function Header() {
   const { totalItems, openCart } = useCart()
@@ -12,21 +12,30 @@ export function Header() {
   const navigate = useNavigate()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Controlled input so it stays in sync when URL params change externally
+  const [searchValue, setSearchValue] = useState(searchParams.get('q') ?? '')
+
+  useEffect(() => {
+    setSearchValue(searchParams.get('q') ?? '')
+  }, [searchParams])
+
   const handleSearch = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
+      setSearchValue(value)
       if (debounceRef.current) clearTimeout(debounceRef.current)
       debounceRef.current = setTimeout(() => {
         const params = new URLSearchParams(searchParams)
         if (value) {
           params.set('q', value)
+          params.delete('category') // search is global — clear any active category
         } else {
           params.delete('q')
         }
-        setSearchParams(params, { replace: true })
+        navigate({ pathname: '/', search: params.toString() }, { replace: true })
       }, 300)
     },
-    [searchParams, setSearchParams],
+    [searchParams, navigate],
   )
 
   const currentCategory = searchParams.get('category') ?? ''
@@ -79,6 +88,7 @@ export function Header() {
                 onClick={() => {
                   const params = new URLSearchParams(searchParams)
                   params.set('category', cat.toLowerCase())
+                  params.delete('q') // category browsing replaces search
                   setSearchParams(params, { replace: true })
                   navigate({ pathname: '/', search: params.toString() })
                 }}
@@ -92,7 +102,7 @@ export function Header() {
             <Input
               type="search"
               placeholder="Search products…"
-              defaultValue={searchParams.get('q') ?? ''}
+              value={searchValue}
               onChange={handleSearch}
               aria-label="Search products"
               className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-400 focus:border-green-500 focus:ring-green-500"

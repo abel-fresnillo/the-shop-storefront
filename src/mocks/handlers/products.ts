@@ -20,19 +20,27 @@ const seedData: ApiProduct[] = [
 const store = new Map<string, ApiProduct>(seedData.map((p) => [p.id, p]))
 
 export const productHandlers = [
-  http.get('*/products', ({ request }) => {
+  // Search by name — must come before /:id to avoid conflict
+  http.get('*/products/search', ({ request }) => {
     const url = new URL(request.url)
-    const category = url.searchParams.get('category')
-    const q = url.searchParams.get('q')?.toLowerCase()
-    let items = Array.from(store.values())
-    if (category) items = items.filter((p) => p.category.toLowerCase() === category.toLowerCase())
-    if (q)
-      items = items.filter(
-        (p) => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q),
-      )
+    const name = url.searchParams.get('name')?.toLowerCase() ?? ''
+    const items = Array.from(store.values()).filter((p) => p.name.toLowerCase().includes(name))
     return HttpResponse.json(items)
   }),
 
+  // Filter by category — must come before /:id to avoid conflict
+  http.get('*/products/category/:category', ({ params }) => {
+    const category = (params.category as string).toLowerCase()
+    const items = Array.from(store.values()).filter((p) => p.category.toLowerCase() === category)
+    return HttpResponse.json(items)
+  }),
+
+  // Get all products
+  http.get('*/products', () => {
+    return HttpResponse.json(Array.from(store.values()))
+  }),
+
+  // Get single product
   http.get('*/products/:id', ({ params }) => {
     const product = store.get(params.id as string)
     if (!product) return new HttpResponse(null, { status: 404 })

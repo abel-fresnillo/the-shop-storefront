@@ -8,9 +8,20 @@ export const productKeys = {
 }
 
 export function useProducts(filters: ProductFilters = {}) {
+  const { category, q } = filters
+
   return useQuery({
     queryKey: productKeys.list(filters),
-    queryFn: () => productsApi.list(filters),
+    queryFn: async () => {
+      // Both filters active: search by name, then filter client-side by category
+      if (q && category) {
+        const results = await productsApi.search(q)
+        return results.filter((p) => p.category.toLowerCase() === category.toLowerCase())
+      }
+      if (q) return productsApi.search(q)
+      if (category) return productsApi.listByCategory(category)
+      return productsApi.list()
+    },
   })
 }
 

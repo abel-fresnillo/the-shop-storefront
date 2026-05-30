@@ -13,6 +13,7 @@ export function CategorySidebar() {
     } else {
       params.delete('category')
     }
+    params.delete('q') // category browsing replaces search
     setSearchParams(params, { replace: true })
   }
 

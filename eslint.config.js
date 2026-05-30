@@ -30,8 +30,9 @@ export default defineConfig([
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
-      // Disable React Compiler memoization warnings — we don't use the React Compiler
+      // Disable React Compiler-specific rules — we don't use the React Compiler
       'react-hooks/incompatible-library': 'off',
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
   // Test files — relax strict rules

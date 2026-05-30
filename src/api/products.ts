@@ -7,12 +7,13 @@ export interface ProductFilters {
 }
 
 export const productsApi = {
-  list: (filters: ProductFilters = {}) => {
-    const params: Record<string, string> = {}
-    if (filters.category) params.category = filters.category
-    if (filters.q) params.q = filters.q
-    return apiClient.get('products', { searchParams: params }).json<ApiProduct[]>()
-  },
+  list: () => apiClient.get('products').json<ApiProduct[]>(),
+
+  search: (name: string) =>
+    apiClient.get('products/search', { searchParams: { name } }).json<ApiProduct[]>(),
+
+  listByCategory: (category: string) =>
+    apiClient.get(`products/category/${encodeURIComponent(category)}`).json<ApiProduct[]>(),
 
   get: (id: string) => apiClient.get(`products/${id}`).json<ApiProduct>(),
 
