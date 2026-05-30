@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ShoppingCart } from 'lucide-react'
 import {
   Sheet,
@@ -10,9 +11,32 @@ import { Button } from '@/components/ui/button'
 import { CartItem } from '@/features/cart/components/CartItem'
 import { CartSummary } from '@/features/cart/components/CartSummary'
 import { useCart } from '@/features/cart/hooks/useCart'
+import { submitOrder } from '@/api/orders'
+import { ApiError } from '@/api/types'
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, openCart, totalItems, subtotal } = useCart()
+  const { items, isOpen, closeCart, openCart, clearCart, totalItems, subtotal } = useCart()
+  const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+
+  async function handleCheckout() {
+    setIsCheckingOut(true)
+    setCheckoutError(null)
+    try {
+      await submitOrder(items)
+      clearCart()
+      closeCart()
+    } catch (err) {
+      console.error('[checkout]', err, err instanceof ApiError ? err.body : null)
+      if (err instanceof ApiError) {
+        setCheckoutError(err.message)
+      } else {
+        setCheckoutError('Something went wrong. Please try again.')
+      }
+    } finally {
+      setIsCheckingOut(false)
+    }
+  }
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => (open ? openCart() : closeCart())}>
@@ -43,7 +67,15 @@ export function CartDrawer() {
           )}
         </div>
 
-        {items.length > 0 && <CartSummary subtotal={subtotal} totalItems={totalItems} />}
+        {items.length > 0 && (
+          <CartSummary
+            subtotal={subtotal}
+            totalItems={totalItems}
+            onCheckout={handleCheckout}
+            isCheckingOut={isCheckingOut}
+            checkoutError={checkoutError}
+          />
+        )}
       </SheetContent>
     </Sheet>
   )

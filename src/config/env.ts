@@ -11,6 +11,11 @@ if (import.meta.env.PROD && !apiBaseUrl.startsWith('https://')) {
 export const config = {
   apiBaseUrl: apiBaseUrl.replace(/\/$/, ''), // strip trailing slash
   appEnv: (import.meta.env.VITE_APP_ENV ?? 'development') as string,
+  orderServiceUrl: ((import.meta.env.VITE_ORDER_SERVICE_URL as string | undefined) ?? '').replace(
+    /\/$/,
+    '',
+  ),
+  orderApiKey: (import.meta.env.VITE_ORDER_API_KEY as string | undefined) ?? '',
   isDev: import.meta.env.DEV,
   isProd: import.meta.env.PROD,
 } as const
