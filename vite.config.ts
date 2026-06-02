@@ -20,6 +20,10 @@ export default defineConfig({
         target: 'http://localhost:3001',
         changeOrigin: true,
       },
+      '/otlp': {
+        target: 'https://otlp-gateway-prod-us-east-3.grafana.net',
+        changeOrigin: true,
+      },
     },
   },
 })
