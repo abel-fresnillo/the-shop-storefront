@@ -1,11 +1,18 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Package, Store } from 'lucide-react'
 import { Toaster } from 'sonner'
 import { cn } from '@/lib/utils'
+import { pageViews } from '@/observability/metrics'
 
 const navItems = [{ to: '/admin/products', label: 'Products', icon: Package }]
 
 export function AdminLayout() {
+  const location = useLocation()
+  useEffect(() => {
+    pageViews.add(1, { route: location.pathname })
+  }, [location.pathname])
+
   return (
     <div className="min-h-screen flex bg-neutral-50">
       <aside className="fixed inset-y-0 left-0 z-40 w-60 bg-neutral-900 text-white flex flex-col">

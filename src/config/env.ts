@@ -16,6 +16,7 @@ export const config = {
     '',
   ),
   orderApiKey: (import.meta.env.VITE_ORDER_API_KEY as string | undefined) ?? '',
+  productApiKey: (import.meta.env.VITE_PRODUCT_API_KEY as string | undefined) ?? '',
   isDev: import.meta.env.DEV,
   isProd: import.meta.env.PROD,
 } as const

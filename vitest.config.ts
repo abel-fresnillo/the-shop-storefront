@@ -25,6 +25,8 @@ export default defineConfig({
       exclude: [
         'src/mocks/**',
         'src/main.tsx',
+        'src/instrumentation.ts',
+        'src/observability/**',
         'src/**/*.d.ts',
         'src/**/*.config.*',
         'tests/**',
