@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy
 
 on:
   push:
@@ -15,7 +15,6 @@ env:
 
 jobs:
   deploy:
-    name: Build & Deploy
     runs-on: ubuntu-latest
     environment: production
     permissions:
