@@ -31,7 +31,7 @@ export function ProductPage() {
           <Link to="/">
             <Button variant="outline">Browse Products</Button>
           </Link>
-          {!is404 && <Button onClick={() => refetch()}>Try This Again</Button>}
+          {!is404 && <Button onClick={() => refetch()}>Try Again</Button>}
         </div>
       </div>
     )
