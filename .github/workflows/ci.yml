@@ -34,11 +34,11 @@ jobs:
 
       - run: npm run test:ci
         env:
-          VITE_API_BASE_URL: http://localhost:3000
+          VITE_PRODUCT_API_URL: http://localhost:3000
 
       - run: npm run build
         env:
-          VITE_API_BASE_URL: https://api.example.com
+          VITE_PRODUCT_API_URL: https://api.example.com
 
   security:
     runs-on: ubuntu-latest
@@ -66,25 +66,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb # v1.2.0
+
       - name: Snyk SCA — dependency vulnerabilities
-        uses: snyk/actions/node@8e119fbb6c251787721d34ba683ed48eba792766 # master
+        run: snyk test --severity-threshold=high --omit=dev
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high --omit=dev
 
       - name: Snyk SCA monitor
         if: github.event_name == 'push' && github.ref == 'refs/heads/development'
-        uses: snyk/actions/node@8e119fbb6c251787721d34ba683ed48eba792766 # master
+        run: snyk monitor
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
 
       - name: Snyk SAST — code analysis
-        uses: snyk/actions/node@8e119fbb6c251787721d34ba683ed48eba792766 # master
+        run: snyk code test --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: code test
-          args: --severity-threshold=high
