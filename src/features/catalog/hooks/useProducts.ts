@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { productsApi, type ProductFilters } from '@/api/products'
+import { searchQueries } from '@/observability/metrics'
 
 export const productKeys = {
   all: ['products'] as const,
@@ -16,9 +17,14 @@ export function useProducts(filters: ProductFilters = {}) {
       // Both filters active: search by name, then filter client-side by category
       if (q && category) {
         const results = await productsApi.search(q)
+        searchQueries.add(1, { has_results: results.length > 0 })
         return results.filter((p) => p.category.toLowerCase() === category.toLowerCase())
       }
-      if (q) return productsApi.search(q)
+      if (q) {
+        const results = await productsApi.search(q)
+        searchQueries.add(1, { has_results: results.length > 0 })
+        return results
+      }
       if (category) return productsApi.listByCategory(category)
       return productsApi.list()
     },

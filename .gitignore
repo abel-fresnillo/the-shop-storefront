@@ -15,10 +15,7 @@ playwright-report
 test-results
 .vercel
 *.local
-.env.local
-.env.*.local
-.env.development
-.env.production
+.env
 
 # Editor directories and files
 .vscode/*

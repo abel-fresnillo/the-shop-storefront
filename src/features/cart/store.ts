@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { ApiProduct } from '@/api/types'
 import type { CartItem } from './types'
+import { cartOperations } from '@/observability/metrics'
 
 interface CartStore {
   items: CartItem[]
@@ -23,6 +24,7 @@ export const useCartStore = create<CartStore>()(
       isOpen: false,
 
       addItem: (product, quantity = 1) => {
+        cartOperations.add(1, { operation: 'add' })
         set((state) => {
           const existing = state.items.find((i) => i.product.id === product.id)
           if (existing) {
@@ -40,6 +42,7 @@ export const useCartStore = create<CartStore>()(
       },
 
       removeItem: (productId) => {
+        cartOperations.add(1, { operation: 'remove' })
         set((state) => ({ items: state.items.filter((i) => i.product.id !== productId) }))
       },
 
@@ -48,6 +51,7 @@ export const useCartStore = create<CartStore>()(
           get().removeItem(productId)
           return
         }
+        cartOperations.add(1, { operation: 'update_quantity' })
         set((state) => ({
           items: state.items.map((i) =>
             i.product.id === productId
@@ -57,7 +61,10 @@ export const useCartStore = create<CartStore>()(
         }))
       },
 
-      clearCart: () => set({ items: [] }),
+      clearCart: () => {
+        cartOperations.add(1, { operation: 'clear' })
+        set({ items: [] })
+      },
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
 
