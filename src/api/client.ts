@@ -9,7 +9,7 @@ import type { Span } from '@opentelemetry/api'
 const inflightRequests = new Map<Request, { span: Span; startTime: number }>()
 
 export const apiClient = ky.create({
-  prefix: config.apiBaseUrl,
+  prefix: config.productApiUrl,
   timeout: 10_000,
   retry: {
     limit: 2,
@@ -70,8 +70,7 @@ export const apiClient = ky.create({
       },
     ],
     beforeError: [
-      (error) => {
-        const request = error.request
+      ({ request, error }) => {
         const entry = inflightRequests.get(request)
         if (entry) {
           const { span, startTime } = entry

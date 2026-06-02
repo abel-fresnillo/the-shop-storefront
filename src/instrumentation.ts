@@ -27,8 +27,10 @@ import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic
 const otlpEndpoint = import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT
 const instanceId = import.meta.env.VITE_OTEL_GRAFANA_INSTANCE_ID
 const apiToken = import.meta.env.VITE_OTEL_GRAFANA_API_TOKEN
-const otlpHeaders =
-  instanceId && apiToken ? { Authorization: `Basic ${btoa(`${instanceId}:${apiToken}`)}` } : {}
+const otlpHeaders: Record<string, string> | undefined =
+  instanceId && apiToken
+    ? { Authorization: `Basic ${btoa(`${instanceId}:${apiToken}`)}` }
+    : undefined
 
 const resource = resourceFromAttributes({
   [ATTR_SERVICE_NAME]: import.meta.env.VITE_OTEL_SERVICE_NAME ?? 'the-shop-storefront',
