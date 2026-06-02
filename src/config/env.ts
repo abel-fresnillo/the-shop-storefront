@@ -4,7 +4,11 @@ if (!productApiUrl) {
   throw new Error('VITE_PRODUCT_API_URL is required but not set')
 }
 
-if (import.meta.env.PROD && !productApiUrl.startsWith('https://')) {
+if (
+  import.meta.env.PROD &&
+  !productApiUrl.startsWith('https://') &&
+  !productApiUrl.startsWith('/')
+) {
   throw new Error('VITE_PRODUCT_API_URL must use HTTPS in production')
 }
 
