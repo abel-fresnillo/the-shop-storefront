@@ -10,7 +10,7 @@ export default defineConfig({
     setupFiles: ['./src/setupTests.ts'],
     exclude: ['**/node_modules/**', '**/dist/**', 'tests/e2e/**'],
     env: {
-      VITE_API_BASE_URL: 'http://localhost:3000/api',
+      VITE_PRODUCT_API_URL: 'http://localhost:3000/api',
       VITE_APP_ENV: 'test',
     },
     coverage: {
