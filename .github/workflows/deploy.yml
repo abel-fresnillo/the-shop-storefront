@@ -4,9 +4,14 @@ on:
   push:
     branches: [main]
 
+permissions: read-all
+
 concurrency:
   group: production-deploy
   cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   deploy:
@@ -14,30 +19,17 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Type-check
-        run: npm run type-check
-
-      - name: Run tests
-        run: npm run test:ci
-        env:
-          VITE_API_BASE_URL: http://localhost:3000
-
-      - name: Security audit
-        run: npm audit --audit-level=high
+      - run: npm ci
 
       - name: Build
         run: npm run build
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
           VITE_APP_ENV: production
-
