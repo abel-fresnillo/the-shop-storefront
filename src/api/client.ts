@@ -11,6 +11,7 @@ const inflightRequests = new Map<Request, { span: Span; startTime: number }>()
 export const apiClient = ky.create({
   prefix: config.productApiUrl,
   timeout: 10_000,
+  headers: config.productApiKey ? { 'x-api-key': config.productApiKey } : {},
   retry: {
     limit: 2,
     methods: ['get'],
@@ -21,7 +22,6 @@ export const apiClient = ky.create({
       ({ request }) => {
         const token = sessionStorage.getItem('auth_token')
         if (token) request.headers.set('Authorization', `Bearer ${token}`)
-        if (config.productApiKey) request.headers.set('x-api-key', config.productApiKey)
 
         const url = new URL(request.url)
         const span = getTracer().startSpan(`HTTP ${request.method} ${url.pathname}`, {
