@@ -1,0 +1,29 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: the-shop-storefront
+  description: A React + TypeScript + Vite storefront with a product catalog, shopping cart, and admin panel.
+  annotations:
+    github.com/project-slug: abel-fresnillo/the-shop-storefront
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - react
+    - typescript
+    - vite
+    - storefront
+    - frontend
+  links:
+    - url: https://github.com/abel-fresnillo/the-shop-storefront/actions/workflows/ci.yml
+      title: CI Workflow
+      icon: github
+    - url: https://github.com/abel-fresnillo/the-shop-storefront/actions/workflows/deploy.yml
+      title: Deploy Workflow
+      icon: github
+    - url: https://iscabel.grafana.net/d/is5wqkj
+      title: Grafana Dashboard
+      icon: dashboard
+spec:
+  type: website
+  lifecycle: production
+  owner: user:default/abel-fresnillo
+  system: the-shop
