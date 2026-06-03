@@ -67,7 +67,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Snyk CLI
-        uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb # v1.2.0
+        uses: snyk/actions/setup@8e119fbb6c251787721d34ba683ed48eba792766 # v1.2.0
 
       - name: Snyk SCA — dependency vulnerabilities
         run: snyk test --severity-threshold=high --omit=dev
