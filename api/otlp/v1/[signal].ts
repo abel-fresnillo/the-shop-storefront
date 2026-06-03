@@ -1,7 +1,8 @@
+export const config = { runtime: 'edge' }
+
 export default async function handler(request: Request): Promise<Response> {
-  const url = new URL(request.url)
-  const grafanaPath = url.pathname.replace('/api/otlp', '/otlp')
-  const targetUrl = `https://otlp-gateway-prod-us-east-3.grafana.net${grafanaPath}`
+  const signal = new URL(request.url).pathname.split('/').pop()
+  const targetUrl = `https://otlp-gateway-prod-us-east-3.grafana.net/otlp/v1/${signal}`
 
   const instanceId = process.env.GRAFANA_INSTANCE_ID
   const apiToken = process.env.GRAFANA_API_TOKEN
