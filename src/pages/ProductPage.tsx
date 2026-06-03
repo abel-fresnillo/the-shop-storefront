@@ -29,7 +29,7 @@ export function ProductPage() {
         </p>
         <div className="flex items-center justify-center gap-3 mt-8">
           <Link to="/">
-            <Button variant="outline">Search Products</Button>
+            <Button variant="outline">Browse Products</Button>
           </Link>
           {!is404 && <Button onClick={() => refetch()}>Try Again</Button>}
         </div>
