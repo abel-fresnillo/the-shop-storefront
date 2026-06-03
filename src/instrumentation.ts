@@ -25,6 +25,8 @@ import { logs } from '@opentelemetry/api-logs'
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions'
 
 const otlpEndpoint = import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT
+const otlpAuthHeader = import.meta.env.VITE_OTEL_EXPORTER_OTLP_AUTH_HEADER as string | undefined
+const otlpHeaders = otlpAuthHeader ? { Authorization: otlpAuthHeader } : undefined
 
 const resource = resourceFromAttributes({
   [ATTR_SERVICE_NAME]: import.meta.env.VITE_OTEL_SERVICE_NAME ?? 'the-shop-storefront',
@@ -34,7 +36,7 @@ const resource = resourceFromAttributes({
 
 if (import.meta.env.VITE_APP_ENV !== 'test') {
   const traceExporter = otlpEndpoint
-    ? new OTLPTraceExporter({ url: `${otlpEndpoint}/v1/traces` })
+    ? new OTLPTraceExporter({ url: `${otlpEndpoint}/v1/traces`, headers: otlpHeaders })
     : new ConsoleSpanExporter()
 
   const tracerProvider = new WebTracerProvider({
@@ -54,7 +56,7 @@ if (import.meta.env.VITE_APP_ENV !== 'test') {
   })
 
   const metricExporter = otlpEndpoint
-    ? new OTLPMetricExporter({ url: `${otlpEndpoint}/v1/metrics` })
+    ? new OTLPMetricExporter({ url: `${otlpEndpoint}/v1/metrics`, headers: otlpHeaders })
     : new ConsoleMetricExporter()
 
   const meterProvider = new MeterProvider({
@@ -66,7 +68,7 @@ if (import.meta.env.VITE_APP_ENV !== 'test') {
   metrics.setGlobalMeterProvider(meterProvider)
 
   const logExporter = otlpEndpoint
-    ? new OTLPLogExporter({ url: `${otlpEndpoint}/v1/logs` })
+    ? new OTLPLogExporter({ url: `${otlpEndpoint}/v1/logs`, headers: otlpHeaders })
     : new ConsoleLogRecordExporter()
 
   const loggerProvider = new LoggerProvider({
