@@ -38,7 +38,7 @@ export function ProductGrid({
   if (isLoading) {
     return (
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+        className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
         aria-label="Loading products"
       >
         {Array.from({ length: 8 }).map((_, i) => (
@@ -90,7 +90,7 @@ export function ProductGrid({
 
   return (
     <div
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+      className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
       aria-label={`${products.length} products`}
     >
       {products.map((product) => (
