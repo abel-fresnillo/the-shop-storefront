@@ -40,7 +40,7 @@ export function ProductCard({ product }: { product: ApiProduct }) {
           <p className="text-xs text-amber-600 font-medium mb-2">Only {product.stock} left</p>
         )}
         <Button
-          className="w-full"
+          className="w-full h-11 sm:h-9 touch-manipulation"
           size="sm"
           variant={isOutOfStock ? 'outline' : 'default'}
           disabled={isOutOfStock}

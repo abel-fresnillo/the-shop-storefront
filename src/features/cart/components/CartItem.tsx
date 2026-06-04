@@ -21,7 +21,7 @@ export function CartItem({ item }: { item: CartItemType }) {
         <Button
           variant="outline"
           size="icon"
-          className="h-7 w-7"
+          className="h-9 w-9 touch-manipulation"
           onClick={() => updateQuantity(product.id, quantity - 1)}
           aria-label="Decrease quantity"
         >
@@ -31,7 +31,7 @@ export function CartItem({ item }: { item: CartItemType }) {
         <Button
           variant="outline"
           size="icon"
-          className="h-7 w-7"
+          className="h-9 w-9 touch-manipulation"
           onClick={() => updateQuantity(product.id, quantity + 1)}
           disabled={quantity >= product.stock}
           aria-label="Increase quantity"
@@ -46,11 +46,11 @@ export function CartItem({ item }: { item: CartItemType }) {
         <Button
           variant="ghost"
           size="icon"
-          className="h-7 w-7 text-neutral-400 hover:text-red-600"
+          className="h-9 w-9 text-neutral-400 hover:text-red-600 touch-manipulation"
           onClick={() => removeItem(product.id)}
           aria-label={`Remove ${product.name} from cart`}
         >
-          <Trash2 className="h-3.5 w-3.5" />
+          <Trash2 className="h-4 w-4" />
         </Button>
       </div>
     </div>

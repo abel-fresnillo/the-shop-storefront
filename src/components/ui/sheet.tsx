@@ -35,7 +35,7 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-600">
+      <DialogPrimitive.Close className="absolute right-3 top-3 p-2 rounded-md opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-600">
         <X className="h-5 w-5" />
         <span className="sr-only">Close cart</span>
       </DialogPrimitive.Close>
