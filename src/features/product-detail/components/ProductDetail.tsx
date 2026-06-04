@@ -13,9 +13,9 @@ import type { ApiProduct } from '@/api/types'
 
 export function ProductDetailSkeleton() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 pt-5 pb-8 md:py-8">
       <Skeleton className="h-5 w-32 mb-8" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
         <Skeleton className="aspect-square rounded-2xl" />
         <div className="space-y-4">
           <Skeleton className="h-8 w-3/4" />
@@ -40,7 +40,7 @@ export function ProductDetail({ product }: { product: ApiProduct }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8 md:py-8">
       <nav className="mb-8">
         <Link
           to="/"
@@ -51,7 +51,7 @@ export function ProductDetail({ product }: { product: ApiProduct }) {
         </Link>
       </nav>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
         <div
           className={`aspect-square rounded-2xl bg-neutral-50 border border-neutral-200 flex items-center justify-center text-8xl ${isOutOfStock ? 'opacity-60' : ''}`}
           aria-hidden="true"
@@ -94,6 +94,7 @@ export function ProductDetail({ product }: { product: ApiProduct }) {
                   <Button
                     variant="outline"
                     size="icon"
+                    className="touch-manipulation"
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                     disabled={quantity <= 1}
                     aria-label="Decrease quantity"
@@ -115,6 +116,7 @@ export function ProductDetail({ product }: { product: ApiProduct }) {
                   <Button
                     variant="outline"
                     size="icon"
+                    className="touch-manipulation"
                     onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
                     disabled={quantity >= product.stock}
                     aria-label="Increase quantity"

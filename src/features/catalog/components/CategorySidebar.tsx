@@ -23,7 +23,7 @@ export function CategorySidebar() {
   ]
 
   return (
-    <aside className="w-52 shrink-0" aria-label="Category filter">
+    <aside className="hidden md:block w-52 shrink-0" aria-label="Category filter">
       <div className="bg-white rounded-xl border border-neutral-200 p-3 sticky top-24">
         <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider px-2 mb-2">
           Categories
@@ -34,7 +34,7 @@ export function CategorySidebar() {
               key={value}
               onClick={() => setCategory(value)}
               className={cn(
-                'w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors text-left',
+                'w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors text-left touch-manipulation',
                 currentCategory === value
                   ? 'bg-green-50 text-green-700 font-medium border-l-2 border-green-600 pl-[10px]'
                   : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900',

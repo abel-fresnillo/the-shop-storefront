@@ -113,7 +113,7 @@ export function Header() {
             variant="ghost"
             size="icon"
             onClick={openCart}
-            className="relative text-neutral-300 hover:text-white hover:bg-neutral-800 shrink-0"
+            className="relative text-neutral-300 hover:text-white hover:bg-neutral-800 shrink-0 h-11 w-11 touch-manipulation"
             aria-label={`Open cart, ${totalItems} items`}
           >
             <ShoppingCart className="h-5 w-5" />

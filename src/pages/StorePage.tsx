@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useProducts } from '@/features/catalog/hooks/useProducts'
 import { ProductGrid } from '@/features/catalog/components/ProductGrid'
 import { CategorySidebar } from '@/features/catalog/components/CategorySidebar'
+import { CategoryPillBar } from '@/features/catalog/components/CategoryPillBar'
 
 export function StorePage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -23,10 +24,10 @@ export function StorePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex gap-8">
+      <div className="flex flex-col gap-6 md:flex-row md:gap-8">
         <CategorySidebar />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4 md:mb-6">
             <div>
               <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">{title}</h1>
               {!isLoading && !isError && products && (
@@ -36,6 +37,7 @@ export function StorePage() {
               )}
             </div>
           </div>
+          <CategoryPillBar />
           <ProductGrid
             products={products}
             isLoading={isLoading}
