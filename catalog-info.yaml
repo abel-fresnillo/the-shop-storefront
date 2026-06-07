@@ -27,6 +27,9 @@ spec:
   lifecycle: production
   owner: user:default/abel-fresnillo
   system: the-shop
+  consumesApis:
+    - the-shop-product-api
+    - the-shop-order-api
 ---
 apiVersion: backstage.io/v1alpha1
 kind: System
@@ -34,4 +37,4 @@ metadata:
   name: the-shop
   description: The Shop e-commerce platform
 spec:
-  owner: abel-fresnillo
+  owner: user:default/abel-fresnillo
